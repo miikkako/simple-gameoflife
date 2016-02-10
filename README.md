@@ -1,2 +1,2 @@
-# simple-gameoflife
- A simple Game of Life
+# A simple Game of Life
+ Playing instructions in-game
