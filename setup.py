@@ -1,16 +1,6 @@
-# A simple setup script to create an executable using PyQt4. This also
-# demonstrates the method for creating a Windows executable that does not have
-# an associated console.
-#
-# PyQt4app.py is a very simple type of PyQt4 application
-#
-# Run the build process by running the command 'python setup.py build'
-#
-# If everything works well you should find a subdirectory in the build
-# subdirectory that contains the files needed to run the application
 
-application_title = "Game of Life" #what you want to application to be called
-main_python_file = "gameoflife.py" #the name of the python file you use to run the program
+application_title = "Game of Life" 
+main_python_file = "gameoflife.py" 
 
 import sys
 
