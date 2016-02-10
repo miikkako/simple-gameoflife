@@ -1,3 +1,4 @@
+# 'python3 setup.py bdist_mac' or 'bdist_msi' on windows
 
 application_title = "Game of Life" 
 main_python_file = "gameoflife.py" 
@@ -15,6 +16,6 @@ includes = ["pygame"]
 setup(
         name = application_title,
         version = "0.1",
-        description = "Sample cx_Freeze PyQt4 script",
+        description = "Game of Life setup",
         options = {"build_exe" : {"includes" : includes }},
         executables = [Executable(main_python_file, base = base)])

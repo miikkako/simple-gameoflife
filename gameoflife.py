@@ -151,7 +151,7 @@ def main():
         pygame.draw.rect(screen, GREY, (0, screen_height, screen_width, screen_height - separator_height))
 
         # basic screen messages:
-        infotext = 'Grid height: ' + str(gridheight) + '  |  width: ' + str(gridwidth) + '  |  square size: ' + str(square) + \
+        infotext = 'Grid height: ' + str(grid.height) + '  |  width: ' + str(grid.width) + '  |  square size: ' + str(square) + \
         '  |  Grid position (x, y): ' + str(drawposition_x // square) + ', ' + str(drawposition_y // square)
         infomessage = Message(infomessage.color, infotext, infomessage.size, infomessage.centerx, infomessage.centery)
         infomessage.show(screen)
