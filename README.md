@@ -1,5 +1,5 @@
-# A simple Game of Life
- Written in python, playing instructions in-game
+# Game of Life
+ A simple _Game of Life_ written in python, playing instructions in-game
  https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
  
 ### Options: choose one
