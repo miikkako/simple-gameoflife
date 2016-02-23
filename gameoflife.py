@@ -69,6 +69,7 @@ def main():
     gridheight = 50
     gridwidth = 50
     grid = Grid(gridheight, gridwidth)
+    gamerules = (2, 3) # rules for how many live neighbours are needed for a cell to survive (minimun, maximum)
 
     done = False
     loops = 0
@@ -79,13 +80,14 @@ def main():
     gridalteringspeed = 5
     drawposition_x = square
     drawposition_y = square
-    textsize = 2 * square
+    textsize = int(1.5 * square)
+    mousedown = False
 
     #define some texts
     stopmessage = Message(BRIGHTYELLOW, 'PAUSED (you can draw)', 3 * textsize, screen_width // 2, screen_height + separator_height//2)
     infomessage = Message(RED, '', textsize, screen_width // 2, screen_height + 2*square)
     texts = (
-        Message(BLACK, 'Grid options: P (wider), O (narrower), L (taller), K (lower)  |  Arrowkeys: Move grid', 
+        Message(BLACK, 'Grid options: P (wider), O (narrower), L (taller), K (lower)  |  Arrowkeys: Move grid  |  Backspace: Rubber', 
             textsize, screen_width // 2, screen_height + 5*square),
         Message(BLACK, 'Game start/stop: D  |  Blank grid: B  |  Make gun: Q, W  |  Particles: - (smaller), + (bigger)', 
             textsize, screen_width // 2, screen_height + 8*square),
@@ -102,7 +104,7 @@ def main():
 
         for event in pygame.event.get():
             # print(event)
-            
+
             if event.type == pygame.QUIT:
                 done = True
                 pygame.quit()
@@ -140,14 +142,26 @@ def main():
                 if event.key == pygame.K_w:
                     grid.makeitem(mousepos[0], mousepos[1], 'southeastgun')
                 if event.key == pygame.K_1:
-                    grid.makeitem(mousepos[0], mousepos[1], 'tenrow')
+                    grid.makeitem(mousepos[0], mousepos[1], 'tenrow') 
+                if event.key == pygame.K_BACKSPACE: # for converting tiles to False
+                    try:
+                        grid.grid[mousepos[0]][mousepos[1]] = False
+                    except IndexError:
+                        pass
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                # turn clicked square live
-                try:
-                    grid.grid[mousepos[0]][mousepos[1]] = not grid.grid[mousepos[0]][mousepos[1]]
-                except IndexError:
-                    pass
+                mousedown = True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                mousedown = False
+
+        """event for-loop ends"""
+
+        if mousedown:
+            # turn clicked square live
+            try:
+                grid.grid[mousepos[0]][mousepos[1]] = True
+            except IndexError:
+                pass
 
         #clear screen
         screen.fill(screencolor)        
@@ -168,7 +182,7 @@ def main():
 
         # game mode
         if not drawmode:
-            grid.handle()
+            grid.handle(rules=gamerules)
         else:
             stopmessage.show(screen)
 

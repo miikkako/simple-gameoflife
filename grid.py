@@ -63,10 +63,11 @@ class Grid(object):
         for j in range(self.height):
             for i in range(self.width): 
                 live = self.countliveneighbours(j, i)
-                if self.grid[j][i] and (live == rules[0] or live == rules[1]):
-                    tosurvive.append((j, i))
-                elif self.grid[j][i] and (live < rules[0] or live > rules[1]) and (j, i) not in tosurvive:
-                    tobekilled.append((j, i))
+                if self.grid[j][i]:
+                    if live == rules[0] or live == rules[1]:
+                        tosurvive.append((j, i))
+                    elif live < rules[0] or live > rules[1] and (j, i) not in tosurvive:
+                        tobekilled.append((j, i))
                 elif not self.grid[j][i] and live == rules[1]:
                     tobewaken.append((j, i))
 
@@ -76,7 +77,7 @@ class Grid(object):
             self.grid[coord[0]][coord[1]] = True
 
     def draw(self, screen, square, dmy, dmx):
-        #draw live squares and grid borders
+        # draw live squares and grid borders
         for j in range(self.height):
             for i in range(self.width):
                 try: 
@@ -84,6 +85,7 @@ class Grid(object):
                         pygame.draw.rect(screen, livecolor, (dmx+i*square, dmy+j*square, square, square))
                 except IndexError:
                     pass
+
         pygame.draw.rect(screen, livecolor, (dmx, dmy+self.height*square, self.width*square, square))
         pygame.draw.rect(screen, livecolor, (dmx, dmy-square, self.width*square, square))
         pygame.draw.rect(screen, livecolor, (dmx+self.width*square, dmy, square, self.height*square))
