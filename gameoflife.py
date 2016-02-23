@@ -43,6 +43,11 @@ def messagetoscreen(screen, color, text, size, centerx, centery):
     pygame.display.update()
 
 
+def mouseposition(mouse, square, drawpos_y, drawpos_x):
+    y = (mouse[1]-drawpos_y)//square
+    x = (mouse[0]-drawpos_x)//square
+    return (y, x)
+
 
 def ismouseinrect(x, y, width, height):
     # x, y = top left corner of the rectangle
@@ -92,10 +97,12 @@ def main():
     while not done:
 
         # if loops % 2 == 0:
+        mouse = pygame.mouse.get_pos()
+        mousepos = mouseposition(mouse, square, drawposition_y, drawposition_x)
 
         for event in pygame.event.get():
             # print(event)
-            mouse = pygame.mouse.get_pos()
+            
             if event.type == pygame.QUIT:
                 done = True
                 pygame.quit()
@@ -129,15 +136,16 @@ def main():
                 if event.key == pygame.K_k: # and grid.height > 5:
                     grid.alterheight('b', gridalteringspeed)
                 if event.key == pygame.K_q:
-                    grid.makegun(mouse[1] // square - drawposition_y // square, mouse[0] // square - drawposition_x // square, 'southeast')
+                    grid.makeitem(mousepos[0], mousepos[1], 'northwestgun')
                 if event.key == pygame.K_w:
-                    grid.makegun(mouse[1] // square - drawposition_y // square, mouse[0] // square - drawposition_x // square, 'northwest')
+                    grid.makeitem(mousepos[0], mousepos[1], 'southeastgun')
+                if event.key == pygame.K_1:
+                    grid.makeitem(mousepos[0], mousepos[1], 'tenrow')
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # turn clicked square live
                 try:
-                    grid.grid[mouse[1]//square-drawposition_y//square][mouse[0]//square-drawposition_x//square] = \
-                        not grid.grid[mouse[1]//square-drawposition_y//square][mouse[0]//square-drawposition_x//square]
+                    grid.grid[mousepos[0]][mousepos[1]] = not grid.grid[mousepos[0]][mousepos[1]]
                 except IndexError:
                     pass
 

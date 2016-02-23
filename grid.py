@@ -1,5 +1,5 @@
 import pygame
-import guns
+import items
 from gameoflife import livecolor, screencolor
 
 
@@ -19,7 +19,7 @@ class Grid(object):
 
     def countliveneighbours(self, y, x):
         count = 0
-
+        # all possible directions
         try:
             if self.grid[y-1][x]: count += 1
         except IndexError:
@@ -55,19 +55,19 @@ class Grid(object):
 
         return count
 
-    def handle(self):
-
+    def handle(self, rules=(2,3)):
+        """ rules = (2,3) is the regular 'game of life' """
         tobekilled = []
         tobewaken = []
         tosurvive = []
         for j in range(self.height):
             for i in range(self.width): 
                 live = self.countliveneighbours(j, i)
-                if self.grid[j][i] and (live == 2 or live == 3):
+                if self.grid[j][i] and (live == rules[0] or live == rules[1]):
                     tosurvive.append((j, i))
-                elif self.grid[j][i] and (live < 2 or live > 3) and (j, i) not in tosurvive:
+                elif self.grid[j][i] and (live < rules[0] or live > rules[1]) and (j, i) not in tosurvive:
                     tobekilled.append((j, i))
-                elif not self.grid[j][i] and live == 3:
+                elif not self.grid[j][i] and live == rules[1]:
                     tobewaken.append((j, i))
 
         for coord in tobekilled:
@@ -90,13 +90,16 @@ class Grid(object):
         pygame.draw.rect(screen, livecolor, (dmx-square, dmy, square, self.height*square))
 
 
-    def makegun(self, y, x, direction):
-        if direction == 'southeast': gun = guns.southeastgun
-        elif direction == 'northwest': gun = guns.northwestgun
+    def makeitem(self, y, x, option):
+        if option == 'southeastgun': item = items.southeastgun
+        elif option == 'northwestgun': item = items.northwestgun
+        elif option == 'tenrow': item = items.tenrow
+        else:
+            raise KeyError('not a valid option')
 
-        for j in range(len(gun)):
-            for i in range(len(gun[0])):
-                if gun[j][i] == 1:
+        for j in range(len(item)):
+            for i in range(len(item[0])):
+                if item[j][i] == 1:
                     try:
                         self.grid[y+j][x+i] = True
                     except IndexError:
